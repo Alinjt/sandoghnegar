@@ -1,403 +1,88 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>صندوق‌نگار | پایگاه تحلیلی و خبری بازار سرمایه و صندوق‌ها</title>
-  
-  <!-- فونت Vazirmatn جهت رندر بدون نقص پیش‌فرض (قابل جایگزینی با Peyda طبق گایدلاین) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  
-  <!-- آیکون‌های Phosphor -->
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              navy: '#0D2B37',
-              orange: '#AC4F25',
-              olive: '#5F6C3A',
-              gray: '#8FA6B3',
-              soft: '#F2F6FA',
-              card: '#FFFFFF'
-            }
-          },
-          fontFamily: {
-            sans: ['Peyda', 'Vazirmatn', 'sans-serif'],
-          }
-        }
-      }
-    }
-  </script>
-
-  <style>
-    body {
-      background-color: #F2F6FA;
-      color: #0D2B37;
-      font-family: 'Peyda', 'Vazirmatn', sans-serif;
-    }
-
-    /* نوار اسکرول زیبا */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #8FA6B3;
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #AC4F25;
-    }
-
-    /* انیمیشن تیکر بازار */
-    @keyframes ticker {
-      0% { transform: translate3d(0, 0, 0); }
-      100% { transform: translate3d(50%, 0, 0); }
-    }
-    .ticker-wrap {
-      overflow: hidden;
-      white-space: nowrap;
-    }
-    .ticker-move {
-      display: inline-flex;
-      animation: ticker 25s linear infinite;
-    }
-    .ticker-move:hover {
-      animation-play-state: paused;
-    }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d2b37">
+  <meta name="description" content="صندوق‌نگار؛ روایت دقیق و روشن از بازار سرمایه و صندوق‌های سرمایه‌گذاری">
+  <title>صندوق‌نگار | رسانه تخصصی بازار سرمایه</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="theme.css">
 </head>
-<body class="selection:bg-brand-orange selection:text-white">
-
-  <!-- ۱. نوار وضعیت شاخص و تیکر زنده بازار -->
-  <div class="bg-brand-navy text-brand-soft text-xs py-2 border-b border-white/10">
-    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-2">
-      <div class="flex items-center gap-4 text-brand-gray">
-        <span class="flex items-center gap-1.5"><i class="ph ph-calendar-blank text-brand-orange"></i> شنبه ۵ مهر ۱۴۰۵</span>
-        <span class="hidden sm:inline">|</span>
-        <span class="flex items-center gap-1.5"><i class="ph ph-clock"></i> نبض زنده معاملات صندوق‌ها</span>
-      </div>
-
-      <!-- تیکر شاخص‌ها -->
-      <div class="w-full md:w-2/3 ticker-wrap overflow-hidden">
-        <div class="ticker-move flex items-center gap-8 text-[13px]">
-          <div class="flex items-center gap-1.5">
-            <span class="text-brand-gray">شاخص کل:</span>
-            <span class="font-bold text-white">۲,۱۴۵,۸۹۰</span>
-            <span class="text-emerald-400 text-xs font-semibold flex items-center">▲ ۱۲,۴۳۰ (۰.۵۸٪)</span>
-          </div>
-          <div class="flex items-center gap-1.5">
-            <span class="text-brand-gray">شاخص طلا:</span>
-            <span class="font-bold text-white">۳۴,۲۱۰</span>
-            <span class="text-rose-400 text-xs font-semibold flex items-center">▼ ۰.۲۱٪</span>
-          </div>
-          <div class="flex items-center gap-1.5">
-            <span class="text-brand-gray">ارزش معاملات خرد:</span>
-            <span class="font-bold text-white">۶۸.۶ همت</span>
-          </div>
-          <div class="flex items-center gap-1.5">
-            <span class="text-brand-gray">ورود پول به صندوق‌های نقره:</span>
-            <span class="font-bold text-emerald-400">+۷۸ میلیارد</span>
-          </div>
-        </div>
-      </div>
+<body class="vivid">
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+  <div class="topline">
+    <div class="container topline-inner">
+      <span id="today"></span>
+      <span class="topline-note"><span class="live-dot"></span> رسانه تخصصی صندوق‌های سرمایه‌گذاری و بازار سرمایه</span>
+      <span class="demo-label">نسخه نمایشی · مطالب نمونه</span>
     </div>
   </div>
 
-  <!-- ۲. هدر و منوی اصلی -->
-  <header class="bg-white sticky top-0 z-50 shadow-sm border-b border-brand-gray/20">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-      
-      <!-- لوگو و برند -->
-      <div class="flex items-center gap-4">
-        <a href="#" class="flex items-center gap-3 group">
-          <!-- لوگوی مینیمال با پالت هماهنگ -->
-          <div class="w-10 h-10 rounded-xl bg-brand-navy flex items-center justify-center shadow-md relative overflow-hidden group-hover:scale-105 transition-transform">
-            <div class="absolute -right-2 -bottom-2 w-7 h-7 bg-brand-orange rounded-full opacity-90"></div>
-            <div class="absolute -left-1 -top-1 w-5 h-5 bg-brand-olive rounded-full opacity-80"></div>
-            <i class="ph-bold ph-chart-line-up text-white text-xl relative z-10"></i>
-          </div>
-          <div>
-            <span class="text-xl font-black text-brand-navy tracking-tight block">صندوق‌نگار</span>
-            <span class="text-[10px] text-brand-gray font-medium tracking-wider">SANDOGH NEGAR</span>
-          </div>
-        </a>
-
-        <!-- ناوبری اصلی دسکتاپ -->
-        <nav class="hidden lg:flex items-center gap-6 mr-8 text-sm font-semibold text-brand-navy/80">
-          <a href="#" class="text-brand-orange transition-colors">صفحه نخست</a>
-          <a href="#" class="hover:text-brand-orange transition-colors">شاخص‌ها</a>
-          <a href="#" class="hover:text-brand-orange transition-colors">درآمد ثابت</a>
-          <a href="#" class="hover:text-brand-orange transition-colors">اهرمی و بخشی</a>
-          <a href="#" class="hover:text-brand-orange transition-colors">طلا و مسکوکات</a>
-          <a href="#" class="hover:text-brand-orange transition-colors">مدرسه صندوق‌ها</a>
-          <a href="#" class="hover:text-brand-orange transition-colors">گزارش و تحلیل</a>
-        </nav>
+  <header class="site-header" id="top">
+    <div class="container masthead">
+      <button class="icon-button menu-toggle" id="menuToggle" aria-label="باز کردن فهرست" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+      <a class="brand" href="#top" aria-label="صندوق‌نگار، صفحه اصلی"><img src="logo-dark.png" alt="صندوق‌نگار"></a>
+      <div class="brand-divider"></div>
+      <p class="brand-caption">روایت روشن<br>از سرمایه‌گذاری</p>
+      <div class="masthead-actions">
+        <button class="icon-button" id="themeToggle" aria-label="تغییر حالت نمایش" title="تغییر حالت نمایش"><svg viewBox="0 0 24 24"><path d="M20.2 15.4A8.5 8.5 0 0 1 8.6 3.8 8.5 8.5 0 1 0 20.2 15.4Z"/></svg></button>
+        <button class="icon-button" id="searchToggle" aria-label="جست‌وجو" title="جست‌وجو"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg></button>
+        <a class="header-cta" href="#newsletter">عضویت در خبرنامه <span>←</span></a>
       </div>
-
-      <!-- دکمه‌ها و ابزارها -->
-      <div class="flex items-center gap-3">
-        <div class="relative hidden sm:block">
-          <input type="text" placeholder="جستجوی نماد، صندوق یا خبر..." 
-                 class="bg-brand-soft border border-brand-gray/30 rounded-xl py-1.5 pr-9 pl-3 text-xs w-56 focus:outline-none focus:border-brand-navy transition">
-          <i class="ph ph-magnifying-glass absolute right-3 top-2 text-brand-gray"></i>
-        </div>
-        <button class="bg-brand-orange hover:bg-brand-orange/90 text-white text-xs font-semibold px-4 py-2 rounded-xl transition shadow flex items-center gap-1.5">
-          <i class="ph-bold ph-newspaper-clipping"></i>
-          عضویت در خبرنامه
-        </button>
-      </div>
-
     </div>
+    <nav class="main-nav" id="mainNav" aria-label="دسته‌بندی مطالب">
+      <div class="container nav-inner">
+        <button class="nav-link active" data-category="همه">صفحه اصلی</button>
+        <button class="nav-link" data-category="اخبار صندوق‌ها">اخبار صندوق‌ها</button>
+        <button class="nav-link" data-category="بازار سرمایه">بازار سرمایه</button>
+        <button class="nav-link" data-category="تحلیل و دیدگاه">تحلیل و دیدگاه</button>
+        <button class="nav-link" data-category="آموزش">آموزش سرمایه‌گذاری</button>
+        <button class="nav-link" data-category="گفت‌وگو">گفت‌وگو</button>
+        <a class="nav-about" href="#about">درباره صندوق‌نگار <span>↗</span></a>
+      </div>
+    </nav>
   </header>
 
-  <!-- ۳. نوار برگزیده‌ها / فیلتر سریع دسته‌های صندوق -->
-  <section class="max-w-7xl mx-auto px-4 py-4">
-    <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none text-xs">
-      <span class="text-brand-navy font-bold flex items-center gap-1 ml-2 shrink-0">
-        <i class="ph-bold ph-funnel text-brand-orange"></i> دسته‌ها:
-      </span>
-      <button class="bg-brand-navy text-white px-3 py-1.5 rounded-lg shrink-0 font-medium">همه صندوق‌ها</button>
-      <button class="bg-white hover:bg-brand-soft text-brand-navy border border-brand-gray/30 px-3 py-1.5 rounded-lg shrink-0 transition">صندوق‌های درآمد ثابت</button>
-      <button class="bg-white hover:bg-brand-soft text-brand-navy border border-brand-gray/30 px-3 py-1.5 rounded-lg shrink-0 transition">صندوق‌های اهرمی</button>
-      <button class="bg-white hover:bg-brand-soft text-brand-navy border border-brand-gray/30 px-3 py-1.5 rounded-lg shrink-0 transition">صندوق‌های بخشی</button>
-      <button class="bg-white hover:bg-brand-soft text-brand-navy border border-brand-gray/30 px-3 py-1.5 rounded-lg shrink-0 transition">صندوق‌های طلا و نقره</button>
-      <button class="bg-white hover:bg-brand-soft text-brand-navy border border-brand-gray/30 px-3 py-1.5 rounded-lg shrink-0 transition">بازنشستگی تکمیلی</button>
-    </div>
-  </section>
+  <main>
+    <section class="news-strip" aria-label="موضوعات روز">
+      <div class="container strip-inner"><span class="strip-title">در کانون توجه <span>◂</span></span><div class="strip-items"><a href="#latest">صندوق‌های قابل معامله</a><i></i><a href="#latest">چشم‌انداز بازار سرمایه</a><i></i><a href="#latest">راهنمای سرمایه‌گذاری</a></div><span class="strip-date">نگاهی دقیق‌تر به اقتصاد فردا</span></div>
+    </section>
 
-  <!-- ۴. بخش سرتیتر اصلی اخبار (Hero Section) -->
-  <main class="max-w-7xl mx-auto px-4 py-2">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-      <!-- کارت خبری ویژه اصلی (۸ ستون) -->
-      <div class="lg:col-span-8 flex flex-col gap-6">
-        <article class="bg-white rounded-2xl overflow-hidden border border-brand-gray/20 shadow-sm hover:shadow-md transition group">
-          <div class="relative h-72 sm:h-96 w-full overflow-hidden bg-brand-navy">
-            <!-- تصویر شبیه‌سازی شده بورس -->
-            <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80" 
-                 alt="تحلیل بازار سرمایه" 
-                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-80">
-            <div class="absolute inset-0 bg-gradient-to-t from-brand-navy via-brand-navy/40 to-transparent"></div>
-            
-            <div class="absolute bottom-0 right-0 left-0 p-6 text-white">
-              <span class="inline-block bg-brand-orange text-white text-xs font-bold px-2.5 py-1 rounded-md mb-2">شاخص کل بورس</span>
-              <h1 class="text-xl sm:text-2xl font-black leading-snug hover:text-brand-soft transition">
-                چرا با وجود رکورد معاملات ۶۸.۶ همتی و رشد شاخص کل، واگرایی هم‌وزن و قدرت خرید منفی ۱.۳۱ زنگ خطر را به صدا درآورد؟
-              </h1>
-              <div class="flex items-center gap-4 text-xs text-brand-gray mt-3">
-                <span class="flex items-center gap-1"><i class="ph ph-clock"></i> پنجشنبه ۲۶ شهریور | ساعت ۰۹:۰۷</span>
-                <span class="flex items-center gap-1"><i class="ph ph-chat-circle"></i> ۱۸ نظر</span>
-              </div>
-            </div>
+    <section class="container hero-section" aria-labelledby="heroHeading">
+      <div class="section-kicker"><span class="kicker-line"></span> سرخط رسانه <span class="kicker-en">TOP STORIES / 01</span></div>
+      <div class="hero-grid">
+        <article class="hero-main story-link" data-id="0" tabindex="0" role="button" aria-label="خواندن گزارش ویژه">
+          <div class="hero-art" aria-hidden="true">
+            <div class="sun-glow"></div><div class="city city-back"></div><div class="city city-front"></div><div class="grid-overlay"></div><div class="curve curve-one"></div><div class="curve curve-two"></div>
           </div>
-          <div class="p-6">
-            <p class="text-brand-navy/80 text-sm leading-relaxed">
-              تحلیل روزانه جریان نقدینگی نشان می‌دهد علی‌رغم صعود اسمی شاخص به مدد چند نماد بزرگ پتروپالایشی، نسبت‌های تکنیکال در صندوق‌های اهرمی و بخشی سیگنال متفاوتی را مخابره می‌کنند...
-            </p>
-          </div>
+          <div class="hero-shade"></div>
+          <div class="hero-content"><span class="hero-tag"><span class="live-dot"></span> گزارش ویژه</span><h1 id="heroHeading">در مسیر سرمایه‌گذاری آگاهانه؛ صندوق‌ها چه نقشی در آینده بازار دارند؟</h1><p>از تنوع ابزارها تا اهمیت شفافیت؛ نگاهی به پرسش‌هایی که پیش روی سرمایه‌گذاران قرار دارد.</p><div class="hero-bottom"><span>تحلیل و دیدگاه <b>•</b> ۶ دقیقه مطالعه</span><span class="round-arrow">↖</span></div></div>
         </article>
-
-        <!-- اخبار دوقلوی زیرین -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <!-- خبر ۱ -->
-          <article class="bg-white p-5 rounded-2xl border border-brand-gray/20 hover:border-brand-orange/40 transition shadow-sm flex flex-col justify-between">
-            <div>
-              <span class="text-[11px] font-bold text-brand-olive bg-brand-olive/10 px-2.5 py-1 rounded-md">فلزات گرانبها</span>
-              <h3 class="font-bold text-base text-brand-navy mt-3 leading-snug hover:text-brand-orange transition">
-                خروج ۲۴۶ میلیارد تومانی از طلا اما ورود ۷۸ میلیاردی به نقره؛ چرا نقدینگی در سبد فلزات تفکیک شد؟
-              </h3>
-            </div>
-            <div class="flex items-center justify-between text-xs text-brand-gray mt-5 pt-3 border-t border-brand-gray/15">
-              <span>سه‌شنبه ۲۴ شهریور</span>
-              <span class="text-brand-orange font-semibold flex items-center gap-1">ادامه تحلیل <i class="ph-bold ph-arrow-left"></i></span>
-            </div>
-          </article>
-
-          <!-- خبر ۲ -->
-          <article class="bg-white p-5 rounded-2xl border border-brand-gray/20 hover:border-brand-orange/40 transition shadow-sm flex flex-col justify-between">
-            <div>
-              <span class="text-[11px] font-bold text-brand-orange bg-brand-orange/10 px-2.5 py-1 rounded-md">تحلیل تکنیکال</span>
-              <h3 class="font-bold text-base text-brand-navy mt-3 leading-snug hover:text-brand-orange transition">
-                عقب‌نشینی شاخص‌ها یا دست‌به‌دست شدن پرحجم سهام در محدوده مقاومتی تاریخی؟
-              </h3>
-            </div>
-            <div class="flex items-center justify-between text-xs text-brand-gray mt-5 pt-3 border-t border-brand-gray/15">
-              <span>پنجشنبه ۲۶ شهریور</span>
-              <span class="text-brand-orange font-semibold flex items-center gap-1">ادامه تحلیل <i class="ph-bold ph-arrow-left"></i></span>
-            </div>
-          </article>
+        <div class="hero-side">
+          <article class="side-feature story-link" data-id="1" tabindex="0" role="button"><div class="side-feature-top"><span class="mini-category">آموزش سرمایه‌گذاری</span><span class="side-number">۰۱ / ۰۲</span></div><div class="side-icon chart-icon"><svg viewBox="0 0 170 110" aria-hidden="true"><path d="M12 86 47 64 75 75 109 34 157 15"/><path d="M12 94h145"/><circle cx="109" cy="34" r="5"/></svg></div><h2>پیش از انتخاب صندوق سرمایه‌گذاری به چه نکاتی توجه کنیم؟</h2><span class="read-line">ادامه مطلب <span>↖</span></span></article>
+          <article class="side-feature side-feature-dark story-link" data-id="2" tabindex="0" role="button"><div class="side-feature-top"><span class="mini-category">بازار سرمایه</span><span class="side-number">۰۲ / ۰۲</span></div><div class="side-orbit" aria-hidden="true"><span></span><span></span><span></span></div><h2>چرا شناخت ریسک، نقطه شروع هر تصمیم مالی است؟</h2><span class="read-line">ادامه مطلب <span>↖</span></span></article>
         </div>
       </div>
+    </section>
 
-      <!-- سایدبار گزارش‌ها و دیدبان صندوق‌ها (۴ ستون) -->
-      <aside class="lg:col-span-4 flex flex-col gap-6">
-        
-        <!-- کارت وضعیت صندوق‌ها -->
-        <div class="bg-white p-5 rounded-2xl border border-brand-gray/20 shadow-sm">
-          <div class="flex items-center justify-between pb-3 border-b border-brand-gray/20 mb-4">
-            <h2 class="font-bold text-base text-brand-navy flex items-center gap-2">
-              <i class="ph-bold ph-chart-polar text-brand-olive text-lg"></i>
-              دیدبان بازدهی صندوق‌ها
-            </h2>
-            <span class="text-[11px] text-brand-olive font-semibold bg-brand-olive/10 px-2 py-0.5 rounded">بازده ماهانه</span>
-          </div>
+    <section class="container latest-section" id="latest" aria-labelledby="latestHeading">
+      <div class="section-heading"><div><div class="section-kicker"><span class="kicker-line"></span> تازه‌ترین مطالب <span class="kicker-en">LATEST NEWS / 02</span></div><h2 id="latestHeading">آخرین روایت‌ها</h2></div><div class="heading-actions"><span id="resultCount">نمایش همه مطالب</span><button id="resetFilter" class="text-link">مشاهده همه <span>←</span></button></div></div>
+      <div class="content-grid"><div class="article-list" id="articleList"></div><aside class="sidebar"><div class="sidebar-card"><div class="sidebar-title"><span>پربازدیدترین</span><span class="tiny-mark">✳</span></div><div id="popularList"></div></div><div class="quote-card"><span class="quote-mark">“</span><p>سرمایه‌گذاری خوب، از پرسیدن پرسش‌های درست آغاز می‌شود.</p><span>صندوق‌نگار / نگاه تحلیلی</span></div></aside></div>
+      <div class="load-wrap"><button class="load-more" id="loadMore">نمایش مطالب بیشتر <span>↓</span></button></div>
+    </section>
 
-          <div class="space-y-3">
-            <div class="flex items-center justify-between p-2.5 rounded-xl bg-brand-soft hover:bg-brand-soft/70 transition">
-              <div>
-                <h4 class="font-bold text-sm text-brand-navy">صندوق اهرمی موج</h4>
-                <span class="text-xs text-brand-gray">NAV ابطال: ۲۴,۵۰۰ ریال</span>
-              </div>
-              <span class="text-emerald-600 font-bold text-sm dir-ltr">+۸.۲٪</span>
-            </div>
+    <section class="focus-section" id="focus" aria-labelledby="focusHeading"><div class="container focus-inner"><div class="focus-intro"><div class="section-kicker"><span class="kicker-line"></span> پرونده ویژه <span class="kicker-en">FOCUS / 03</span></div><h2 id="focusHeading">سرمایه‌گذاری،<br><em>با دیدی بازتر.</em></h2><p>مفاهیم بازار سرمایه را ساده و دقیق مرور کنید و ابزار مناسب با هدف خود را بهتر بشناسید.</p><button class="focus-button" data-category-jump="آموزش">ورود به بخش آموزش <span>↖</span></button></div><div class="focus-visual" aria-hidden="true"><div class="focus-ring ring-a"></div><div class="focus-ring ring-b"></div><div class="focus-ring ring-c"></div><div class="focus-center"><div class="focus-eye"></div></div><span class="focus-caption caption-a">دانش</span><span class="focus-caption caption-b">شفافیت</span><span class="focus-caption caption-c">تصمیم</span></div></div></section>
 
-            <div class="flex items-center justify-between p-2.5 rounded-xl bg-brand-soft hover:bg-brand-soft/70 transition">
-              <div>
-                <h4 class="font-bold text-sm text-brand-navy">صندوق طلای کهربا</h4>
-                <span class="text-xs text-brand-gray">NAV ابطال: ۱۸,۹۰۰ ریال</span>
-              </div>
-              <span class="text-rose-500 font-bold text-sm dir-ltr">-۱.۴٪</span>
-            </div>
+    <section class="container categories-section"><div class="section-heading"><div><div class="section-kicker"><span class="kicker-line"></span> دسته‌بندی موضوعی <span class="kicker-en">EXPLORE / 04</span></div><h2>از دریچه صندوق‌نگار</h2></div></div><div class="category-cards"><button data-category-jump="اخبار صندوق‌ها"><span class="cat-index">۰۱</span><span class="cat-symbol">◈</span><strong>اخبار صندوق‌ها</strong><small>رویدادها و تحولات صنعت صندوق</small><span class="cat-arrow">↖</span></button><button data-category-jump="بازار سرمایه"><span class="cat-index">۰۲</span><span class="cat-symbol">⌁</span><strong>بازار سرمایه</strong><small>آنچه در بازار می‌گذرد</small><span class="cat-arrow">↖</span></button><button data-category-jump="تحلیل و دیدگاه"><span class="cat-index">۰۳</span><span class="cat-symbol">◎</span><strong>تحلیل و دیدگاه</strong><small>خوانشی عمیق‌تر از روندها</small><span class="cat-arrow">↖</span></button><button data-category-jump="آموزش"><span class="cat-index">۰۴</span><span class="cat-symbol">✳</span><strong>آموزش</strong><small>مفاهیم کاربردی برای همه</small><span class="cat-arrow">↖</span></button></div></section>
 
-            <div class="flex items-center justify-between p-2.5 rounded-xl bg-brand-soft hover:bg-brand-soft/70 transition">
-              <div>
-                <h4 class="font-bold text-sm text-brand-navy">صندوق با درآمد ثابت کارا</h4>
-                <span class="text-xs text-brand-gray">نرخ موثر سالانه: ۳۱.۵٪</span>
-              </div>
-              <span class="text-emerald-600 font-bold text-sm dir-ltr">+۲.۶٪</span>
-            </div>
-          </div>
-
-          <a href="#" class="block text-center text-xs font-bold text-brand-navy hover:text-brand-orange mt-4 pt-3 border-t border-brand-gray/15">
-            مشاهده رتبه‌بندی کامل صندوق‌ها
-          </a>
-        </div>
-
-        <!-- مطالب و گزارش‌های پربازدید -->
-        <div class="bg-white p-5 rounded-2xl border border-brand-gray/20 shadow-sm">
-          <h2 class="font-bold text-base text-brand-navy flex items-center gap-2 pb-3 border-b border-brand-gray/20 mb-4">
-            <i class="ph-bold ph-flame text-brand-orange text-lg"></i>
-            پربازدیدترین گزارش‌ها
-          </h2>
-
-          <div class="space-y-4">
-            <a href="#" class="flex gap-3 group">
-              <span class="font-black text-xl text-brand-gray/40 group-hover:text-brand-orange transition">۰۱</span>
-              <div>
-                <h5 class="text-xs font-bold text-brand-navy leading-snug group-hover:text-brand-orange transition">
-                  مقایسه بازدهی صندوق‌های بخشی خودرو و پتروشیمی در ۳ ماهه دوم
-                </h5>
-                <span class="text-[11px] text-brand-gray mt-1 block">۴,۲۰۰ بازدید</span>
-              </div>
-            </a>
-
-            <a href="#" class="flex gap-3 group">
-              <span class="font-black text-xl text-brand-gray/40 group-hover:text-brand-orange transition">۰۲</span>
-              <div>
-                <h5 class="text-xs font-bold text-brand-navy leading-snug group-hover:text-brand-orange transition">
-                  راهنمای سرمایه‌گذاری برای تازه‌واردها در صندوق‌های بازنشستگی
-                </h5>
-                <span class="text-[11px] text-brand-gray mt-1 block">۳,۱۵۰ بازدید</span>
-              </div>
-            </a>
-
-            <a href="#" class="flex gap-3 group">
-              <span class="font-black text-xl text-brand-gray/40 group-hover:text-brand-orange transition">۰۳</span>
-              <div>
-                <h5 class="text-xs font-bold text-brand-navy leading-snug group-hover:text-brand-orange transition">
-                  نقش بازارگردان‌ها در کنترل حباب اسمی طلا در تالار نقره‌ای
-                </h5>
-                <span class="text-[11px] text-brand-gray mt-1 block">۲,۸۹۰ بازدید</span>
-              </div>
-            </a>
-          </div>
-        </div>
-
-        <!-- بنر مدرسه صندوق‌ها -->
-        <div class="bg-gradient-to-br from-brand-navy to-[#184657] text-white p-5 rounded-2xl relative overflow-hidden">
-          <i class="ph-duotone ph-graduation-cap text-6xl text-white/10 absolute -bottom-2 -left-2"></i>
-          <span class="text-xs font-bold text-brand-orange bg-white/10 px-2 py-0.5 rounded">آکادمی هوشمند</span>
-          <h3 class="text-base font-bold mt-2 mb-1">مدرسه صندوق‌های سرمایه‌گذاری</h3>
-          <p class="text-xs text-brand-gray leading-relaxed mb-4">آشنایی با مدیریت دارایی، بازده بدون ریسک و استراتژی‌های اهرمی از صفر تا صد.</p>
-          <button class="bg-brand-orange hover:bg-brand-orange/90 text-white text-xs font-semibold px-4 py-2 rounded-xl transition">
-            ورود به دوره‌ها
-          </button>
-        </div>
-
-      </aside>
-    </div>
+    <section class="newsletter-section" id="newsletter"><div class="container newsletter-inner"><div><span class="eyebrow">صندوق‌نگار در کنار شما</span><h2>از روایت‌های تازه جا نمانید.</h2><p>برای دریافت گزیده مطالب تحلیلی، نشانی ایمیل خود را ثبت کنید.</p></div><form id="newsletterForm" class="newsletter-form"><label for="email">نشانی ایمیل</label><div class="input-row"><input id="email" type="email" placeholder="example@email.com" required><button type="submit" aria-label="ثبت ایمیل">←</button></div><small id="formMessage">این فرم در نسخه نمایشی، اطلاعاتی ارسال نمی‌کند.</small></form></div></section>
   </main>
 
-  <!-- ۵. فوتر مدرن با رنگ پایه Dark Navy -->
-  <footer class="bg-brand-navy text-brand-gray mt-16 pt-12 pb-8 border-t border-brand-gray/20">
-    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-      
-      <!-- درباره برند -->
-      <div class="md:col-span-1">
-        <div class="flex items-center gap-2 mb-3">
-          <div class="w-8 h-8 rounded-lg bg-brand-orange flex items-center justify-center text-white font-bold">
-            <i class="ph-bold ph-chart-line-up"></i>
-          </div>
-          <span class="text-lg font-black text-white">صندوق‌نگار</span>
-        </div>
-        <p class="text-xs leading-relaxed text-brand-soft/70">
-          مرجع تخصصی پایش، تحلیل و اخبار صندوق‌های سرمایه‌گذاری بازار سرمایه ایران با رویکرد داده‌محور و تصمیم‌گیری شفاف.
-        </p>
-      </div>
+  <footer class="footer" id="about"><div class="container footer-main"><div class="footer-brand"><div class="footer-logo"><img src="logo-dark.png" alt="صندوق‌نگار"></div><p>روایتی روشن، دقیق و قابل‌فهم از صندوق‌های سرمایه‌گذاری و بازار سرمایه.</p></div><div><h3>دسترسی سریع</h3><a href="#top">صفحه اصلی</a><a href="#latest">آخرین مطالب</a><a href="#focus">پرونده ویژه</a></div><div><h3>موضوعات</h3><button data-category-jump="اخبار صندوق‌ها">اخبار صندوق‌ها</button><button data-category-jump="تحلیل و دیدگاه">تحلیل و دیدگاه</button><button data-category-jump="آموزش">آموزش سرمایه‌گذاری</button></div><div class="footer-note"><h3>درباره این نسخه</h3><p>این وب‌سایت یک نمونه طراحی بر پایه راهنمای هویت بصری صندوق‌نگار است. مطالب و تعاملات آن برای نمایش ساختار رسانه‌ای تهیه شده‌اند.</p></div></div><div class="container footer-bottom"><span>© صندوق‌نگار · طرح نمایشی</span><a href="#top">بازگشت به بالا ↑</a></div></footer>
 
-      <!-- لینک‌های سریع -->
-      <div>
-        <h4 class="text-sm font-bold text-white mb-3">دسترسی سریع</h4>
-        <ul class="text-xs space-y-2">
-          <li><a href="#" class="hover:text-brand-orange transition">صندوق‌های درآمد ثابت</a></li>
-          <li><a href="#" class="hover:text-brand-orange transition">صندوق‌های سهامی و اهرمی</a></li>
-          <li><a href="#" class="hover:text-brand-orange transition">صندوق‌های کالایی (طلا و نقره)</a></li>
-          <li><a href="#" class="hover:text-brand-orange transition">مدیران و ارکان صندوق‌ها</a></li>
-        </ul>
-      </div>
-
-      <!-- بخش رسانه و آموزش -->
-      <div>
-        <h4 class="text-sm font-bold text-white mb-3">رسانه و آکادمی</h4>
-        <ul class="text-xs space-y-2">
-          <li><a href="#" class="hover:text-brand-orange transition">پادکست نبض صندوق</a></li>
-          <li><a href="#" class="hover:text-brand-orange transition">تحلیل‌های ویدئویی هفتگی</a></li>
-          <li><a href="#" class="hover:text-brand-orange transition">گزارش‌های ماهانه آماری</a></li>
-          <li><a href="#" class="hover:text-brand-orange transition">راهنمای ابطال و صدور واحدها</a></li>
-        </ul>
-      </div>
-
-      <!-- خبرنامه -->
-      <div>
-        <h4 class="text-sm font-bold text-white mb-3">خبرنامه اختصاصی</h4>
-        <p class="text-xs text-brand-soft/70 mb-3">مهم‌ترین تحرکات و ورود و خروج پول هوشمند هر روز صبح در ایمیل شما.</p>
-        <div class="flex gap-2">
-          <input type="email" placeholder="ایمیل خود را وارد کنید..." class="bg-white/10 border border-white/20 rounded-xl px-3 py-1.5 text-xs text-white placeholder-brand-gray w-full focus:outline-none focus:border-brand-orange">
-          <button class="bg-brand-orange text-white px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-brand-orange/90 transition">ثبت</button>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- کپی‌رایت نهایی -->
-    <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-white/10 text-center text-xs text-brand-gray flex flex-col sm:flex-row justify-between items-center gap-2">
-      <p>© ۱۴۰۵ تمامی حقوق برای پایگاه خبری-تحلیلی صندوق‌نگار محفوظ است.</p>
-      <div class="flex gap-4 text-base">
-        <a href="#" class="hover:text-brand-orange"><i class="ph-bold ph-telegram-logo"></i></a>
-        <a href="#" class="hover:text-brand-orange"><i class="ph-bold ph-instagram-logo"></i></a>
-        <a href="#" class="hover:text-brand-orange"><i class="ph-bold ph-linkedin-logo"></i></a>
-      </div>
-    </div>
-  </footer>
-
+  <div class="search-layer" id="searchLayer" hidden><div class="search-panel" role="dialog" aria-modal="true" aria-label="جست‌وجو در مطالب"><button class="close-button" id="searchClose" aria-label="بستن">×</button><span class="eyebrow">جست‌وجو در صندوق‌نگار</span><div class="search-input-wrap"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><input id="searchInput" type="search" placeholder="موضوع مورد نظر را بنویسید..." autocomplete="off"></div><div id="searchResults" class="search-results"></div></div></div>
+  <div class="reader-layer" id="readerLayer" hidden><div class="reader-backdrop" id="readerBackdrop"></div><article class="reader" role="dialog" aria-modal="true" aria-labelledby="readerTitle"><button class="close-button" id="readerClose" aria-label="بستن">×</button><span id="readerCategory" class="reader-category"></span><h2 id="readerTitle"></h2><p id="readerLead" class="reader-lead"></p><div class="reader-meta">صندوق‌نگار <span>•</span> محتوای نمونه برای نمایش طراحی</div><div class="reader-rule"></div><div id="readerBody" class="reader-body"></div><button class="bookmark-button" id="bookmarkButton">☆ ذخیره مطلب</button></article></div>
+  <script src="script.js"></script>
 </body>
 </html>
